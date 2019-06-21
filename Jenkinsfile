@@ -1,13 +1,13 @@
 node{
 	stage('SCM Checkout'){
-		git branch: 'slacknotification', url: 'https://github.com/prabhatpankaj/devopsprojects.git'
+		git branch: 'slacknotification', url: ''
 	}
 	stage('Compile-Package'){
-		def mvnHome = tool name: 'maven-3.5.4', type: 'maven'
+		def mvnHome = tool name: 'maven', type: 'maven'
 		sh "${mvnHome}/bin/mvn package"
 	}
 	stage('Deploy to Tomcat'){
-		sshagent(['tomcat-server']) {
+		sshagent(['tomcat-dev']) {
 		sh 'scp -o StrictHostKeyChecking=no target/*.war ec2-user@3.91.180.24:/opt/tomcat9/webapps/'
 		}
 	}
